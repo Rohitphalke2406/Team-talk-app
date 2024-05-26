@@ -6,7 +6,7 @@ function MessageBox({message, timestamp, user, userImage}) {
       <img src={userImage} alt=""  className='w-12 h-12 rounded-2xl mr-2'/>
       <div>
         <h4>
-            {user} <span>{new Date(timestamp?.toDate()).toUTCString()}</span>
+            {user} <span style={{color:'gray', fontSize:10, marginRight:10 , fontWeight:300}}>{new Date(timestamp?.toDate()).toUTCString()}</span>
         </h4>
         <p>{message}</p>
       </div>

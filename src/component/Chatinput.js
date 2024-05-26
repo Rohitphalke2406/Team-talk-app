@@ -1,10 +1,12 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-function Chatinput({ channelName, channelId }) {
+function Chatinput({ channelName, channelId, chatref }) {
   const [input, setInput] = useState("");
+  const[user] = useAuthState(auth)
   console.log(channelId);
 
   const sendMessage = async (e) => {
@@ -18,10 +20,14 @@ function Chatinput({ channelName, channelId }) {
       await addDoc(collection(db, "rooms", channelId, "messages"), {
         message: input,
         timestamp: serverTimestamp(),
-        user: 'Rohit Phalke',
-        userImage: 'https://topofthelist.net/wp-content/uploads/2016/01/Hydrangeas.jpg',
+        user: user.displayName,
+        userImage: user.photoURL,
       });
       console.log("Message sent successfully");
+
+      // chatref.current.scrollIntoView({
+      //   behavior: 'smooth',
+      // })
       setInput("");
     } catch (error) {
       console.error("Error sending message: ", error);

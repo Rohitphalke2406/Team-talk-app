@@ -4,17 +4,19 @@ import SidebarOption from './SidebarOption';
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import { Add, Apps, BookmarkBorder, Drafts, ExpandLess, ExpandMore, FileCopy, Inbox, PeopleAlt } from '@mui/icons-material';
 import {useCollection} from "react-firebase-hooks/firestore"
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 import { collection,query } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Sidebar() {
   const channelRef = query(collection(db,"rooms"))
-  const[channels, loading,error] = useCollection(channelRef);
+  const[channels] = useCollection(channelRef);
+  const[user] = useAuthState(auth);
   return (
-    <div className='w-1/5 bg-gradient-to-b from-fuchsia-950 from-50% via-fuchsia-800 to-fuchsia-700 h-auto text-white px-1 py-3 '>
-      <h1 className='text-lg'>Rohit Phalke</h1>
+    <div className='w-1/5 bg-gradient-to-b from-fuchsia-950 from-50% via-fuchsia-800 to-fuchsia-700 h-max text-white px-1 py-3 '>
+      <h1 className='text-lg'>{user?.displayName}</h1>
       <div className='flex justify-between items-center'>
-        <h4 className='text-sm'>Rohit45</h4>
+        <h4 className='text-sm'>{user?.email}</h4>
         <CreateIcon/>
       </div><hr className='w-full mt-2 '/> 
       
